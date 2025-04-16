@@ -1,0 +1,111 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.gemini-sidebar-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Estilos del botón para mostrar el menú */
+.gemini-toggle-button {
+  position: fixed; /* Para que siempre esté visible */
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 3; /* Asegúrate de que esté por encima del sidebar */
+}
+
+/* Estilos del menú lateral (inicialmente oculto) */
+.gemini-sidebar {
+  width: 0; /* Ancho inicial 0 para ocultarlo */
+  background-color: #f0f0f0;
+  border-right: 1px solid #ccc;
+  padding: 20px 0; /* Ajustar padding para cuando esté abierto */
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; /* Ocultar contenido que se desborda al estar cerrado */
+  transition: width 0.3s ease-in-out, padding 0.3s ease-in-out; /* Animación */
+}
+
+/* Estilos del menú lateral cuando está abierto */
+.gemini-sidebar.open {
+  width: 250px;
+  padding: 20px;
+}
+
+.gemini-logo {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+  opacity: 0; /* Ocultar inicialmente */
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out 0.1s, visibility 0.3s ease-in-out 0.1s;
+}
+
+.gemini-sidebar.open .gemini-logo {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gemini-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  opacity: 0; /* Ocultar inicialmente */
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out 0.2s, visibility 0.3s ease-in-out 0.2s;
+}
+
+.gemini-sidebar.open ul {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gemini-sidebar ul li {
+  padding: 10px 0;
+}
+
+.gemini-sidebar ul li button {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 5px;
+}
+
+.gemini-sidebar ul li button:hover {
+  background-color: #e0e0e0;
+}
+
+.gemini-sidebar ul li.active button {
+  background-color: #d0d0d0;
+  font-weight: bold;
+}
+
+/* Estilos del contenido principal */
+.gemini-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #fff;
+  margin-left: 60px; /* Espacio para el botón del menú cuando está cerrado */
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* Ajustar el margen izquierdo del contenido cuando el menú está abierto */
+.gemini-sidebar-container.open .gemini-content {
+  margin-left: 250px; /* Ancho del menú abierto */
+}
+
+.gemini-content h2 {
+  margin-top: 0;
+  color: #333;
+}

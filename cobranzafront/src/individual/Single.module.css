@@ -1,0 +1,203 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.heading {
+  color: #4285f4;
+  margin-bottom: 20px;
+}
+
+.contentWrapper {
+  display: flex; /* Para colocar la tabla y el formulario uno al lado del otro */
+  gap: 30px; /* Espacio entre la tabla y el formulario */
+  align-items: flex-start; /* Alinea la parte superior de la tabla y el formulario */
+}
+
+.tableContainer {
+  flex: 1; /* La tabla ocupa el espacio disponible */
+}
+
+.tableContainer h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #5f6368;
+}
+
+.tableContainer table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #dadce0;
+}
+
+.tableContainer th,
+.tableContainer td {
+  border: 1px solid #dadce0;
+  padding: 8px;
+  text-align: left;
+}
+
+.tableContainer th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.tableContainer p {
+  color: #5f6368;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 300px; /* Ancho fijo del formulario */
+}
+
+.form div {
+  margin-bottom: 15px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  color: #5f6368;
+  font-size: 0.9em;
+}
+
+.input {
+  padding: 10px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 1em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #4285f4;
+  box-shadow: 0 1px 2px 0 rgba(66, 133, 244, 0.3);
+}
+
+.button {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: #357ae8;
+}
+
+.button:focus {
+  outline: none;
+  box-shadow: 0 1px 3px 0 rgba(66, 133, 244, 0.5);
+}
+
+.tableContainer h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #5f6368;
+  display: flex; /* Para alinear el título y el botón */
+  justify-content: space-between; /* Espacio entre el título y el botón */
+  align-items: center; /* Alineación vertical */
+}
+
+.tableContainer table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #dadce0;
+  margin-bottom: 10px; /* Espacio entre la tabla y el botón */
+}
+
+/* ... otros estilos de la tabla ... */
+
+.clearButton {
+  background-color: #f44336; /* Rojo para indicar acción de eliminar */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clearButton:hover {
+  background-color: #d32f2f; /* Rojo más oscuro al pasar el ratón */
+}
+
+.clearButton:focus {
+  outline: none;
+  box-shadow: 0 1px 3px 0 rgba(244, 67, 54, 0.5);
+}
+
+.tableContainer h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #5f6368;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tableContainer table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #dadce0;
+  margin-bottom: 10px;
+}
+
+/* ... otros estilos de la tabla ... */
+
+.tableActions {
+  display: flex;
+  gap: 10px; /* Espacio entre los botones de la tabla */
+}
+
+.clearButton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clearButton:hover {
+  background-color: #d32f2f;
+}
+
+.clearButton:focus {
+  outline: none;
+  box-shadow: 0 1px 3px 0 rgba(244, 67, 54, 0.5);
+}
+
+.downloadButton {
+  background-color: #4CAF50; /* Verde para indicar descarga */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.downloadButton:hover {
+  background-color: #43A047;
+}
+
+.downloadButton:focus {
+  outline: none;
+  box-shadow: 0 1px 3px 0 rgba(76, 175, 80, 0.5);
+}
