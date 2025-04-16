@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './Single.module.css'; // Importa los estilos
 
 function PaginaDePago() {
+  const [cedulaIdentidad, setCedulaIdentidad] = useState('');
   const [nombreCliente, setNombreCliente] = useState('');
   const [fechaMaximaPago, setFechaMaximaPago] = useState('');
   const [fechaPago, setFechaPago] = useState('');
@@ -11,6 +12,7 @@ function PaginaDePago() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const nuevoRegistro = {
+      cedulaIdentidad,
       nombreCliente,
       fechaMaximaPago,
       fechaPago,
@@ -18,6 +20,7 @@ function PaginaDePago() {
     };
     setRegistros([...registros, nuevoRegistro]);
     // Limpiar el formulario después de agregar
+    setCedulaIdentidad('');
     setNombreCliente('');
     setFechaMaximaPago('');
     setFechaPago('');
@@ -49,12 +52,31 @@ function PaginaDePago() {
     URL.revokeObjectURL(url);
   };
 
+  const handleNumeroInput = (event) => {
+    // Permite solo dígitos
+    const value = event.target.value.replace(/[^0-9]/g, '').slice(0, 11);;
+    setCedulaIdentidad(value);
+  };
+
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Información de Pago</h2>
       <div className={styles.contentWrapper}>
         
         <form onSubmit={handleSubmit} className={styles.form}>
+
+        <div>
+            <label htmlFor="cedulaIdentidad" className={styles.label}>Cédula de Identidad:</label>
+            <input
+              type="text"
+              id="cedulaIdentidad"
+              value={cedulaIdentidad}
+              onChange={handleNumeroInput} // Usa la función para solo números
+              className={styles.input}
+              required
+            />
+          </div>
+
           <div>
             <label htmlFor="nombreCliente" className={styles.label}>Nombre del Cliente:</label>
             <input
@@ -111,6 +133,7 @@ function PaginaDePago() {
               <table>
                 <thead>
                   <tr>
+                    <th>Cédula</th>
                     <th>Nombre</th>
                     <th>Fecha Máxima</th>
                     <th>Fecha Pago</th>
@@ -120,6 +143,7 @@ function PaginaDePago() {
                 <tbody>
                   {registros.map((registro, index) => (
                     <tr key={index}>
+                      <td>{registro.cedulaIdentidad}</td>
                       <td>{registro.nombreCliente}</td>
                       <td>{registro.fechaMaximaPago}</td>
                       <td>{registro.fechaPago}</td>
