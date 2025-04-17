@@ -85,3 +85,150 @@
     background-color: #f0f0f0;
     font-weight: bold;
   }
+
+  .dataContainer {
+    margin-top: 20px;
+    width: 100%;
+    overflow-x: auto; /* Para tablas grandes */
+    display: flex; /* Para alinear la tabla y el botón (opcional) */
+    flex-direction: column; /* Para colocar el botón debajo de la tabla (opcional) */
+    align-items: flex-start; /* Alinea el botón a la izquierda (opcional) */
+  }
+  
+  .dataContainer h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #5f6368;
+  }
+  
+  .dataContainer table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #dadce0;
+    margin-bottom: 10px; /* Espacio entre la tabla y el botón */
+  }
+  
+  /* ... otros estilos de la tabla ... */
+  
+  .preprocessButton {
+    background-color: #2196F3; /* Azul para el botón de pre-procesamiento */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px; /* Espacio entre la tabla y el botón */
+  }
+  
+  .preprocessButton:hover {
+    background-color: #1976D2;
+  }
+  
+  .preprocessButton:focus {
+    outline: none;
+    box-shadow: 0 1px 3px 0 rgba(33, 150, 243, 0.5);
+  }
+
+  .modificationsContainer {
+    margin-top: 30px;
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .modificationsContainer h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #2E7D32; /* Verde más oscuro para el título */
+  }
+  
+  .modificationsContainer table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #81C784; /* Verde más claro para el borde */
+  }
+  
+  .modificationsContainer th,
+  .modificationsContainer td {
+    border: 1px solid #81C784;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .modificationsContainer th {
+    background-color: #C8E6C9; /* Verde muy claro para el encabezado */
+    font-weight: bold;
+  }
+  
+  .modifiedField {
+    background-color: #DCEDC8; /* Verde claro para el campo modificado */
+  }
+
+  .uploadContainer {
+    margin-bottom: 20px;
+    display: flex; /* To align the label and the new button */
+    align-items: center; /* Vertically align items */
+  }
+  
+  .uploadLabel {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .uploadInput {
+    display: none; /* Hide the default file input */
+  }
+  
+  .newAnalysisButton {
+    background-color: #008CBA; /* Blue color for the new analysis button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-left: 10px; /* Space between the select file button and this one */
+  }
+  
+  .newAnalysisButton:hover {
+    background-color: #0077A3;
+  }
+  
+  .newAnalysisButton:focus {
+    outline: none;
+    box-shadow: 0 1px 3px 0 rgba(0, 139, 186, 0.5);
+  }
+
+  /* ... otros estilos ... */
+
+.preprocessPhase2Button {
+  background-color: #4CAF50; /* Verde para diferenciar la fase 2 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 10px; /* Espacio entre la tabla de modificaciones y este botón */
+}
+
+.preprocessPhase2Button:hover {
+  background-color: #45a049;
+}
+
+.preprocessPhase2Button:focus {
+  outline: none;
+  box-shadow: 0 1px 3px 0 rgba(76, 175, 80, 0.5);
+}
+
+/* ... otros estilos ... */
+  
+  

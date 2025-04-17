@@ -4,7 +4,7 @@ import Sidebar from './barmenu/Sidebar.js';
 function App() {
   return (
    <div className="App">
-      <head>
+    <head>
       <title>Sistema de Cobranza</title>
       </head>
        <Sidebar />
