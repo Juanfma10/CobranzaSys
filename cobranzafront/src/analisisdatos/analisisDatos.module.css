@@ -206,7 +206,6 @@
     box-shadow: 0 1px 3px 0 rgba(0, 139, 186, 0.5);
   }
 
-  /* ... otros estilos ... */
 
 .preprocessPhase2Button {
   background-color: #4CAF50; /* Verde para diferenciar la fase 2 */
@@ -229,6 +228,34 @@
   box-shadow: 0 1px 3px 0 rgba(76, 175, 80, 0.5);
 }
 
-/* ... otros estilos ... */
+.phase2OutputContainer {
+  margin-top: 30px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.phase2OutputContainer h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #1976D2; /* Azul para el título de Fase 2 */
+}
+
+.phase2OutputContainer table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #64B5F6; /* Azul más claro para el borde */
+}
+
+.phase2OutputContainer th,
+.phase2OutputContainer td {
+  border: 1px solid #64B5F6;
+  padding: 8px;
+  text-align: left;
+}
+
+.phase2OutputContainer th {
+  background-color: #BBDEFB; /* Azul muy claro para el encabezado */
+  font-weight: bold;
+}
   
   

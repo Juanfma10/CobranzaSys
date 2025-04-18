@@ -9,6 +9,13 @@ function AnalisisDatos() {
   const [error, setError] = useState(null);
   const [filasModificadas, setFilasModificadas] = useState([]);
   const [isFileSelectedAndProcessed, setIsFileSelectedAndProcessed] = useState(false);
+  const [datosPreProcesadosFase2, setDatosPreProcesadosFase2] = useState(null); // Nuevo estado para los datos de Fase 2
+  const [datosPreProcesadosFase1, setDatosPreProcesadosFase1] = useState(null);
+  const [fechaInicioCobranza, setFechaInicioCobranza] = useState('');
+
+  const handleFechaInicioCobranzaChange = (event) => {
+    setFechaInicioCobranza(event.target.value);
+  };
 
   const handleSubirArchivo = (event) => {
     const archivo = event.target.files[0];
@@ -54,114 +61,104 @@ function AnalisisDatos() {
     reader.readAsText(archivoCSV);
   };
 
-  const handlePreProcesamiento = () => {   if (!datosCSVOriginal || datosCSVOriginal.length <= 1) {
-    alert('No hay datos para pre-procesar.');
-    return;
-  }
-
-  const encabezados = datosCSVOriginal[0].map(header => header.toLowerCase());
-  const indiceFechaPago = encabezados.indexOf('fechapago');
-  const indiceFechaMaximaPago = encabezados.indexOf('fechamaximapago');
-  const nuevosFilasModificadas = [];
-
-  if (indiceFechaPago === -1 || indiceFechaMaximaPago === -1) {
-    alert('Las columnas "fechapago" o "fechaMaximaPago" no se encontraron en el archivo CSV.');
-    return;
-  }
-
-  const nuevosDatosCSVMostrar = datosCSVOriginal.map((fila, index) => {
-    if (index === 0) return [...fila];
-
-    const nuevaFila = [...fila];
-    let modificada = false;
-    if (nuevaFila[indiceFechaPago] === undefined || nuevaFila[indiceFechaPago].trim() === '') {
-      nuevaFila[indiceFechaPago] = nuevaFila[indiceFechaMaximaPago];
-      modificada = true;
+  const handlePreProcesamiento = () => {
+    if (!datosCSVOriginal || datosCSVOriginal.length <= 1) {
+      alert('No hay datos para pre-procesar.');
+      return;
+    }
+    if (!fechaInicioCobranza) {
+      alert('Por favor, selecciona la fecha de inicio de cobranza.');
+      return;
     }
 
-    if (modificada) {
-      nuevosFilasModificadas.push({
-        original: [...fila],
-        modificada: nuevaFila,
-        indices: { fechaPago: indiceFechaPago }
-      });
-    }
-    return nuevaFila;
-  });
+    const encabezados = datosCSVOriginal[0].map(header => header.toLowerCase());
+    const indiceFechaPago = encabezados.indexOf('fechapago');
+    const indiceFechaMaximaPago = encabezados.indexOf('fechamaximapago');
+    const nuevosFilasModificadas = [];
+    const datosModificados = datosCSVOriginal.map((fila, index) => {
+      if (index === 0) return [...fila];
+      const nuevaFila = [...fila];
+      let modificada = false;
+      if (nuevaFila[indiceFechaPago] === undefined || nuevaFila[indiceFechaPago].trim() === '') {
+        nuevaFila[indiceFechaPago] = nuevaFila[indiceFechaMaximaPago];
+        modificada = true;
+      }
+      if (modificada) {
+        nuevosFilasModificadas.push({ original: [...fila], modificada: nuevaFila, indices: { fechaPago: indiceFechaPago } });
+      }
+      return nuevaFila;
+    });
 
-  setDatosCSVMostrar(nuevosDatosCSVMostrar); // La tabla principal ahora se actualiza con los campos llenos
-  setFilasModificadas(nuevosFilasModificadas);
-  alert('Las fechas de pago vacías se han completado y se muestra una tabla de modificaciones.');
-};
+    setFilasModificadas(nuevosFilasModificadas);
+    setDatosPreProcesadosFase1(datosModificados); // Almacena los datos modificados
+    alert('Las fechas de pago vacías se han completado y se muestra una tabla de modificaciones.');
+  };
 
-const handlePreProcesamientoFase2 = () => {
-  if (!datosCSVMostrar || datosCSVMostrar.length <= 1) {
-    alert('No hay datos suficientes para pre-procesar para la predicción (tabla modificada).');
-    return;
-  }
-
-  const encabezadosMostrar = datosCSVMostrar[0];
-  const datosParaPrediccion = [...datosCSVMostrar.slice(1)];
-
-  const getIndice = (header) => encabezadosMostrar.findIndex(h => h.toLowerCase() === header.toLowerCase());
-  const indiceFechaMaximaPago = getIndice('fechamaximapago');
-  const indiceFechaPago = getIndice('fechapago');
-  const indiceMonto = getIndice('monto');
-
-  if (indiceFechaMaximaPago === -1) {
-    alert('La columna "fechaMaximaPago" no se encontró en la tabla modificada.');
-    return;
-  }
-
-  const datosConObjetivo = datosParaPrediccion.map(fila => {
-    const fechaMaxima = new Date(fila[indiceFechaMaximaPago]);
-    const fechaPagoStr = fila[indiceFechaPago];
-    let diasRetraso = null;
-
-    if (fechaPagoStr && fechaPagoStr.trim() !== '') {
-      const fechaPagoReal = new Date(fechaPagoStr);
-      const diferenciaTiempo = fechaPagoReal.getTime() - fechaMaxima.getTime();
-      diasRetraso = Math.ceil(diferenciaTiempo / (1000 * 3600 * 24));
+  const handlePreProcesamientoFase2 = () => {
+    if (!datosPreProcesadosFase1 || datosPreProcesadosFase1.length <= 1) {
+      alert('Por favor, ejecuta el Pre-Procesamiento primero.');
+      return;
     }
 
-    return {
-      fechaMaximaPago: fila[indiceFechaMaximaPago],
-      fechaPago: fechaPagoStr,
-      monto: parseFloat(fila[indiceMonto]),
-      diasRetraso: diasRetraso,
-      filaOriginal: fila,
-    };
-  }).filter(item => item.diasRetraso !== null);
+    const encabezadosMostrar = datosPreProcesadosFase1[0];
+    const datosParaPrediccion = [...datosPreProcesadosFase1.slice(1)];
 
-  if (datosConObjetivo.length === 0) {
-    alert('No hay datos de pagos completados en la tabla modificada para generar la variable objetivo.');
-    return;
-  }
+    const getIndice = (header) => encabezadosMostrar.findIndex(h => h.toLowerCase() === header.toLowerCase());
+    const indiceFechaMaximaPago = getIndice('fechamaximapago');
+    const indiceFechaPago = getIndice('fechapago');
+    const indiceMonto = getIndice('monto');
 
-  const datosConCaracteristicas = datosConObjetivo.map(item => {
-    const fechaMaxima = new Date(item.fechaMaximaPago);
-    const diaSemanaMaximaPago = fechaMaxima.getDay();
-    const mesMaximaPago = fechaMaxima.getMonth() + 1;
+    if (indiceFechaMaximaPago === -1) {
+      alert('La columna "fechaMaximaPago" no se encontró en los datos pre-procesados.');
+      return;
+    }
 
-    return {
-      ...item,
-      diaSemanaMaximaPago,
-      mesMaximaPago,
-      monto: item.monto,
-    };
-  });
+    const datosConObjetivo = datosParaPrediccion.map(fila => {
+      const fechaMaxima = new Date(fila[indiceFechaMaximaPago]);
+      const fechaPagoStr = fila[indiceFechaPago];
+      let diasRetraso = null;
 
-  const X = datosConCaracteristicas.map(item => ({
-    diaSemanaMaximaPago: item.diaSemanaMaximaPago,
-    mesMaximaPago: item.mesMaximaPago,
-    monto: item.monto,
-  }));
-  const y = datosConCaracteristicas.map(item => item.diasRetraso);
+      if (fechaPagoStr && fechaPagoStr.trim() !== '') {
+        const fechaPagoReal = new Date(fechaPagoStr);
+        const diferenciaTiempo = fechaPagoReal.getTime() - fechaMaxima.getTime();
+        diasRetraso = Math.ceil(diferenciaTiempo / (1000 * 3600 * 24));
+      }
 
-  console.log('Datos Pre-Procesados Fase 2 (X) para entrenamiento (desde tabla modificada):', X.slice(0, 5));
-  console.log('Variable Objetivo (y) para entrenamiento Fase 2 (desde tabla modificada):', y.slice(0, 5));
-  alert(`Pre-procesamiento Fase 2 completado (usando tabla modificada). Se prepararon ${datosConCaracteristicas.length} registros para el entrenamiento del modelo.`);
-};
+      return {
+        fechaMaximaPago: fila[indiceFechaMaximaPago],
+        fechaPago: fechaPagoStr,
+        monto: parseFloat(fila[indiceMonto]),
+        diasRetraso: diasRetraso,
+        filaOriginal: fila,
+      };
+    }).filter(item => item.diasRetraso !== null);
+
+    if (datosConObjetivo.length === 0) {
+      alert('No hay datos de pagos completados en los datos pre-procesados para generar la variable objetivo.');
+      return;
+    }
+
+    const datosConCaracteristicas = datosConObjetivo.map(item => {
+      const fechaMaxima = new Date(item.fechaMaximaPago);
+      const diaSemanaMaximaPago = fechaMaxima.getDay();
+      const mesMaximaPago = fechaMaxima.getMonth() + 1;
+      const fechaInicio = new Date(fechaInicioCobranza);
+      const diferenciaInicioMaxima = Math.ceil((fechaMaxima.getTime() - fechaInicio.getTime()) / (1000 * 3600 * 24));
+
+
+      return {
+        diaSemanaMaximaPago,
+        mesMaximaPago,
+        monto: item.monto,
+        diasRetraso: item.diasRetraso,
+        diferenciaInicioMaxima,
+      };
+    });
+
+    setDatosPreProcesadosFase2(datosConCaracteristicas);
+    console.log('Datos Pre-Procesados Fase 2:', datosConCaracteristicas.slice(0, 5));
+    alert(`Pre-procesamiento Fase 2 completado. Se prepararon ${datosConCaracteristicas.length} registros para el entrenamiento del modelo.`);
+  };
 
 
   const handleNuevoAnalisis = () => {
@@ -171,6 +168,9 @@ const handlePreProcesamientoFase2 = () => {
     setFilasModificadas([]);
     setError(null);
     setIsFileSelectedAndProcessed(false);
+    setFechaInicioCobranza(''); // Restablecer la fecha de inicio de cobranza
+    setDatosPreProcesadosFase1(null); // Restablecer los datos de Fase 1
+    setDatosPreProcesadosFase2(null); // Restablecer los datos de Fase 2
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -225,6 +225,17 @@ const handlePreProcesamientoFase2 = () => {
               ))}
             </tbody>
           </table>
+
+          <div className={styles.cobranzaDateInput}>
+            <label htmlFor="fechaInicioCobranza">Fecha de inicio de cobranza:</label>
+            <input
+              type="date"
+              id="fechaInicioCobranza"
+              value={fechaInicioCobranza}
+              onChange={handleFechaInicioCobranzaChange}
+            />
+          </div>
+
           <button className={styles.preprocessButton} onClick={handlePreProcesamiento}>
             Pre-Procesamiento
           </button>
@@ -266,6 +277,35 @@ const handlePreProcesamientoFase2 = () => {
           </button>
         </div>
       )}
+
+
+      {datosPreProcesadosFase2 && (
+        <div className={styles.phase2OutputContainer}>
+          <h3>Datos Pre-Procesados (Fase 2):</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Día Semana Max Pago</th>
+                <th>Mes Max Pago</th>
+                <th>Monto</th>
+                <th>Días Retraso</th>
+              </tr>
+            </thead>
+            <tbody>
+              {datosPreProcesadosFase2.map((data, index) => (
+                <tr key={index}>
+                  <td>{data.diaSemanaMaximaPago}</td>
+                  <td>{data.mesMaximaPago}</td>
+                  <td>{data.monto}</td>
+                  <td>{data.diasRetraso}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      
 
       {archivoCSV && datosCSVMostrar.length === 0 && !error && (
         <button className={styles.processButton} onClick={procesarCSV}>
