@@ -257,5 +257,9 @@
   background-color: #BBDEFB; /* Azul muy claro para el encabezado */
   font-weight: bold;
 }
+
+.dataContainer.completo table {
+  border: 2px solid green; /* Ejemplo de borde verde */
+}
   
   
